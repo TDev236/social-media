@@ -16,9 +16,14 @@ const Post = ({name, message, email, timestamp, image, postImage}) => {
                     <p
                         className="font-medium "
                     >{name}</p>
-                    <p className="text-xs text-gray-400">
+                    {timestamp ? (
+                        <p className="text-xs text-gray-400">
                         {new Date(timestamp?.toDate()).toLocaleString()}
                     </p>
+                    ): (
+                        <p className="text-xs text-gray-400">Cargando</p>
+                    )}
+                    
                 </div>
             </div>
             <p className="pt-4">{message}</p>

@@ -4,7 +4,7 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import { db } from '../firebase';
 import Post from './Post';
 
-const Feed = () => {
+const Feed = ({posts}) => {
   const [realtimePosts, loading, error] = useCollection(
     query(collection(db, 'posts/'), orderBy('timestamp', 'desc'))
   );
@@ -12,8 +12,7 @@ const Feed = () => {
   return (
     <div className='scrollbar-hide'>
       <p>{error && `error`}</p>
-      {loading && <span>Cargando Publicaciones...</span>}
-      {realtimePosts && (
+      {realtimePosts ? (
         <div>
           {realtimePosts.docs.map((post) => (
             <Post
@@ -26,6 +25,18 @@ const Feed = () => {
             />
           ))}
         </div>
+      ): (
+        posts.map((post) => (
+          <Post
+            key={post.id}
+            name={post.name}
+            message={post.message}
+            email={post.email}
+            timestamp={post.timestamp}
+            image={post.profileImage}
+            postImage={post.postImage}
+          />
+        ))
       )}
     </div>
   )

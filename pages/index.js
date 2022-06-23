@@ -6,8 +6,10 @@ import Sidebar from '../components/Sidebar'
 import { getSession, useSession } from 'next-auth/react'
 import Widgets from '../components/Widgets'
 import FeedContainer from '../components/FeedContainer'
+import { collection, orderBy, query, getDocs, getDoc } from 'firebase/firestore'
+import { db } from '../firebase'
 
-export default function Home() {
+export default function Home({ posts}) {
   const { data: session } = useSession()
   if(!session) return <Login/>
   
@@ -23,7 +25,7 @@ export default function Home() {
         {/**<SideBar/> */}
         <Sidebar/>
         {/**<Feed/> */}
-        <FeedContainer/>
+        <FeedContainer posts={posts}/>
         {/**<Widgets/> */}
         <Widgets/>
       </main>
@@ -33,9 +35,20 @@ export default function Home() {
 
 
 export async function getServerSideProps(context) {
+
+  const q =  query(collection(db, 'posts/'), orderBy('timestamp', 'desc'))
+  const posts = await getDocs(q)
+  
+  const documentos = posts.docs.map((post) => ({
+    id: post.id,
+    ...post.data(),
+    timestamp:null,
+  }))
+
   return {
     props: {
       session: await getSession(context),
+      posts: documentos,
     },
   }
 }
