@@ -1,9 +1,29 @@
 
 import Image from "next/image"
 //Icons Import
-import { ChatAltIcon, ShareIcon, ThumbUpIcon }  from '@heroicons/react/outline'
+import { ChatAltIcon, ShareIcon, HeartIcon }  from '@heroicons/react/outline'
+import { useRef, useState } from "react"
+import { increment, updateDoc, collection, documentId, doc } from "firebase/firestore"
+import { db } from "../firebase"
+import { useSession } from "next-auth/react"
 
-const Post = ({name, message, email, timestamp, image, postImage}) => {
+const Post = ({name, message, posts, timestamp, image, postImage}) => {
+    const {data: session } = useSession();
+    const [like, setLike] = useState(false)
+    const [likeCount, setLikeCount] = useState(0)
+    console.log(like)
+    const postAcctionsToDb =  (e) => {
+        e.preventDefault();
+        setLike(!like)
+        if(!like) return;
+            setLikeCount(1)
+            posts?.map((post) => {
+                console.log(post.id)
+            })
+            
+
+        }
+
   return (
     <div className="flex flex-col">
         <div className="p-5 bg-white mt-5 rounded-t-2xl shadow-sm">
@@ -44,8 +64,8 @@ const Post = ({name, message, email, timestamp, image, postImage}) => {
                 <ChatAltIcon className="h-4 group-hover:text-green-500"/>
                 <p className="subText">Comentar</p>
             </div>
-            <div className="inputIcon group">
-                <ThumbUpIcon className="h-4 group-hover:text-blue-500"/>
+            <div onClick={postAcctionsToDb} className="inputIcon group">
+                <HeartIcon  className={like > 0 ? `h-4 text-red-500` : 'h-4 text-gray-500'}/>
                 <p className="subText">Me Gusta</p>
             </div>
             <div className="inputIcon group">

@@ -22,7 +22,6 @@ const InputBox = () => {
             reader.readAsDataURL(e.target.files[0]);
             setImageToPost(e.target.files[0])
         }
-
         reader.onload = (readerEvent) => {
             setImagePreview(readerEvent.target.result)
         }

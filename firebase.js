@@ -6,7 +6,7 @@ import { getFirestore } from 'firebase/firestore';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
+ const firebaseConfig = {
   apiKey: "AIzaSyDdUp3tPLUu6Yi8lY6RjMxC6aPj5V4l0uI",
   authDomain: "red-social-v1.firebaseapp.com",
   projectId: "red-social-v1",
@@ -20,4 +20,4 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-export {db, storage};
+export {db, storage, firebaseConfig, app};

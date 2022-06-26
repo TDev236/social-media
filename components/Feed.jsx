@@ -35,6 +35,7 @@ const Feed = ({posts}) => {
             timestamp={post.timestamp}
             image={post.profileImage}
             postImage={post.postImage}
+            posts={posts}
           />
         ))
       )}
